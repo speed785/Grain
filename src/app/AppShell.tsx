@@ -5,6 +5,7 @@ import { WorkspaceHeader } from '../components/layout/WorkspaceHeader';
 import { FormattingToolbar } from '../components/toolbar/FormattingToolbar';
 import { useDocumentState } from '../features/document/useDocumentState';
 import { useWorkspacePreferences } from '../features/workspace/useWorkspacePreferences';
+import { trackEvent } from '../lib/analytics/posthog';
 import { sampleDocument } from './sampleDocument';
 import { useLegacyStorageMigration } from './useLegacyStorageMigration';
 
@@ -78,7 +79,10 @@ export function AppShell() {
           onFontScaleChange={setFontScale}
           isFocusMode={isFocusMode}
           onFocusModeChange={setIsFocusMode}
-          onExportMarkdown={() => downloadMarkdownFile(content, title)}
+          onExportMarkdown={() => {
+            trackEvent('markdown_exported', { documentTitle: title, wordCount });
+            downloadMarkdownFile(content, title);
+          }}
         />
 
         <main className="workspace" data-layout={layoutMode}>

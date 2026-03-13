@@ -43,7 +43,8 @@ jobs:
       - name: Build for Pages
         env:
           VITE_BASE_PATH: /${{ github.event.repository.name }}/
-          VITE_GOATCOUNTER_DOMAIN: ${{ vars.VITE_GOATCOUNTER_DOMAIN }}
+          VITE_POSTHOG_KEY: ${{ vars.VITE_POSTHOG_KEY }}
+          VITE_POSTHOG_HOST: ${{ vars.VITE_POSTHOG_HOST }}
         run: npm run build
 
       - name: Upload Pages artifact

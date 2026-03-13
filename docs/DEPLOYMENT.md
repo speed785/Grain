@@ -18,18 +18,20 @@ Grain builds to `dist/` and can be deployed on any static host that supports Vit
 - Build-time base path is set automatically from the repository name via `VITE_BASE_PATH`
 - In repository settings, enable GitHub Pages with GitHub Actions as the source
 
-## Free Metrics
+## Product Analytics
 
-Grain can optionally load GoatCounter for simple hosted analytics.
+Grain can optionally load PostHog for richer product analytics.
 
-- Create a free GoatCounter site
-- Add `VITE_GOATCOUNTER_DOMAIN=your-project.goatcounter.com` as a GitHub repository variable used at build time
-- If the variable is absent, no analytics script is loaded
+- Create a PostHog project
+- Add `VITE_POSTHOG_KEY` as a GitHub repository variable used at build time
+- Optionally add `VITE_POSTHOG_HOST`; default: `https://us.i.posthog.com`
+- If `VITE_POSTHOG_KEY` is absent, analytics stays disabled
 
-GitHub CLI example:
+GitHub CLI examples:
 
 ```bash
-gh variable set VITE_GOATCOUNTER_DOMAIN --body "your-project.goatcounter.com" --repo speed785/Grain
+gh variable set VITE_POSTHOG_KEY --body "phc_your_project_key" --repo speed785/Grain
+gh variable set VITE_POSTHOG_HOST --body "https://us.i.posthog.com" --repo speed785/Grain
 ```
 
 ## Branch Checks

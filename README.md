@@ -81,10 +81,20 @@ Serves the production build locally for verification.
 
 ## Analytics
 
-- Optional GoatCounter support is built in for free, privacy-friendly traffic metrics
-- Set `VITE_GOATCOUNTER_DOMAIN=your-project.goatcounter.com` to enable it
-- For GitHub Pages, add it as a repository variable named `VITE_GOATCOUNTER_DOMAIN`
-- Leave that variable unset to ship with no analytics script at all
+- Optional PostHog support is built in for product analytics and can stay fully env-driven
+- Set `VITE_POSTHOG_KEY` to your PostHog project API key to enable analytics
+- Optionally set `VITE_POSTHOG_HOST`; the default is `https://us.i.posthog.com`
+- For GitHub Pages, add them as repository variables named `VITE_POSTHOG_KEY` and `VITE_POSTHOG_HOST`
+- Leave `VITE_POSTHOG_KEY` unset to ship with analytics disabled
+
+Tracked starter events:
+
+- app loaded
+- layout changed
+- theme changed
+- font scale changed
+- focus mode toggled
+- markdown exported
 
 ## Customization
 
