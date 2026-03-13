@@ -80,7 +80,13 @@ export function AppShell() {
           isFocusMode={isFocusMode}
           onFocusModeChange={setIsFocusMode}
           onExportMarkdown={() => {
-            trackEvent('markdown_exported', { documentTitle: title, wordCount });
+            trackEvent('markdown_exported', {
+              wordCount,
+              readMinutes,
+              layout: layoutMode,
+              theme: themeId,
+              focusMode: isFocusMode,
+            });
             downloadMarkdownFile(content, title);
           }}
         />

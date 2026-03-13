@@ -19,8 +19,11 @@ type AnalyticsEventMap = {
     enabled: boolean;
   };
   markdown_exported: {
-    documentTitle: string;
     wordCount: number;
+    readMinutes: number;
+    layout: string;
+    theme: string;
+    focusMode: boolean;
   };
 };
 
