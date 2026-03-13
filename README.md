@@ -1,46 +1,89 @@
-# Getting Started with Create React App
+# Grain
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Grain is a premium markdown editor in progress: Typora-like writing flow, Atom-like customization, and a deliberate visual system.
 
-## Available Scripts
+## Current Status
+
+The repository is now in an MVP foundation stage. The app has a real editor shell with:
+
+- CodeMirror-based markdown editing
+- live preview with GitHub-flavored markdown tables and task lists
+- split, editor-only, and preview-only layouts
+- local autosave and draft restore
+- persisted theme and reading scale preferences
+- markdown export for the active draft
+
+## Vision
+
+- fast, focused markdown writing
+- beautiful preview and typography
+- split, editor-only, and preview-first layouts
+- local-first persistence and draft recovery
+- strong theming and workspace customization
+- room to grow into command palette, plugins, and desktop packaging
+
+## Project Docs
+
+- `AGENTS.md` - project roles and collaboration workflow
+- `docs/VISION.md` - product vision and quality bar
+- `docs/ROADMAP.md` - phased implementation plan
+- `docs/ARCHITECTURE.md` - proposed source structure and technical direction
+- `docs/DEPLOYMENT.md` - production verification and static host setup
+
+## Scripts
 
 In the project directory, you can run:
 
+### `npm run dev`
+
+Starts the Vite development server.
+
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Alias for `npm run dev`.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Runs Vitest.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Type-checks the app and builds it for production into `dist/`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `npm run preview`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Serves the production build locally for verification.
 
-### `npm run eject`
+## Tech Stack
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- React 19
+- TypeScript with Vite
+- `@uiw/react-codemirror` for the editing surface
+- `react-markdown` for preview rendering
+- Radix UI primitives for editor controls
+- `framer-motion` for interaction polish
+- `sass` for styling and theming
+- Vitest for fast testing
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Quality Checks
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- `npm run lint` for static analysis
+- `npm test -- --run` for one-off Vitest runs
+- `npm run build` for type-checking and production bundling
+- GitHub Actions CI at `.github/workflows/ci.yml` runs both on pushes and pull requests
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## GitHub Automation
 
-## Learn More
+- `.github/workflows/ci.yml` runs lint, tests, and build on `main`, `master`, `develop`, and pull requests
+- `.github/workflows/branch-checks.yml` validates pull request branch naming
+- `.github/workflows/deploy-pages.yml` deploys the production build to GitHub Pages from `main`
+- `VITE_BASE_PATH` is supported for static deployments that need a repository subpath
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Brand Migration
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Grain now uses `grain.*` local storage keys
+- A one-time migration moves saved drafts and workspace preferences from legacy `markdown-editor.*` keys on first load
+
+## Suggested Next Step
+
+Build on the current shell with focus mode, document outline, command palette, and multi-document persistence.

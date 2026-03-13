@@ -1,0 +1,23 @@
+name: Branch Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+jobs:
+  branch-name:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate source branch naming
+        env:
+          BRANCH_NAME: ${{ github.head_ref }}
+        run: |
+          echo "Checking branch: ${BRANCH_NAME}"
+          if [[ ! "${BRANCH_NAME}" =~ ^(feature|fix|chore|docs|refactor|test|release)\/.+ ]]; then
+            echo "Branch names must start with feature/, fix/, chore/, docs/, refactor/, test/, or release/"
+            exit 1
+          fi
