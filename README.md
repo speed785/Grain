@@ -95,6 +95,7 @@ Tracked starter events:
 - font scale changed
 - focus mode toggled
 - markdown exported
+- runtime errors from uncaught exceptions, unhandled promises, and React render crashes
 
 ## Customization
 

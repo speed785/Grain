@@ -25,6 +25,16 @@ type AnalyticsEventMap = {
     theme: string;
     focusMode: boolean;
   };
+  runtime_error: {
+    source: 'window' | 'promise' | 'react';
+    message: string;
+    name?: string;
+    stack?: string;
+    path: string;
+    layout?: string;
+    theme?: string;
+    focusMode?: boolean;
+  };
 };
 
 let analyticsReady = false;
@@ -69,6 +79,62 @@ export function trackEvent<EventName extends keyof AnalyticsEventMap>(
   }
 
   posthog.capture(eventName, properties);
+}
+
+function getWorkspaceContext() {
+  if (typeof document === 'undefined' || typeof window === 'undefined') {
+    return { path: 'unknown' };
+  }
+
+  return {
+    path: window.location.pathname,
+    layout: document.body.dataset.layout,
+    theme: document.body.dataset.theme,
+    focusMode: document.body.dataset.focus === 'on',
+  };
+}
+
+function sanitizeStack(stack?: string) {
+  if (!stack) {
+    return undefined;
+  }
+
+  return stack.split('\n').slice(0, 6).join('\n');
+}
+
+export function trackRuntimeError(source: 'window' | 'promise' | 'react', error: unknown, fallbackMessage?: string) {
+  const parsedError = error instanceof Error ? error : undefined;
+
+  trackEvent('runtime_error', {
+    source,
+    message: parsedError?.message || fallbackMessage || 'Unknown error',
+    name: parsedError?.name,
+    stack: sanitizeStack(parsedError?.stack),
+    ...getWorkspaceContext(),
+  });
+}
+
+export function registerErrorTracking() {
+  if (typeof window === 'undefined') {
+    return () => undefined;
+  }
+
+  const onError = (event: ErrorEvent) => {
+    trackRuntimeError('window', event.error, event.message);
+  };
+
+  const onUnhandledRejection = (event: PromiseRejectionEvent) => {
+    const rejection = event.reason instanceof Error ? event.reason : undefined;
+    trackRuntimeError('promise', rejection ?? event.reason, typeof event.reason === 'string' ? event.reason : 'Unhandled promise rejection');
+  };
+
+  window.addEventListener('error', onError);
+  window.addEventListener('unhandledrejection', onUnhandledRejection);
+
+  return () => {
+    window.removeEventListener('error', onError);
+    window.removeEventListener('unhandledrejection', onUnhandledRejection);
+  };
 }
 
 export function resetAnalyticsForTests() {

@@ -1,5 +1,5 @@
 import posthog from 'posthog-js';
-import { bootAnalytics, resetAnalyticsForTests, trackEvent } from './posthog';
+import { bootAnalytics, registerErrorTracking, resetAnalyticsForTests, trackEvent, trackRuntimeError } from './posthog';
 
 vi.mock('posthog-js', () => ({
   default: {
@@ -37,5 +37,39 @@ describe('posthog analytics', () => {
     trackEvent('theme_changed', { theme: 'spruce' });
 
     expect(posthog.capture).toHaveBeenCalledWith('theme_changed', { theme: 'spruce' });
+  });
+
+  it('captures runtime errors with safe context', () => {
+    bootAnalytics();
+    document.body.dataset.theme = 'spruce';
+    document.body.dataset.layout = 'split';
+    document.body.dataset.focus = 'on';
+
+    trackRuntimeError('react', new Error('Exploded'));
+
+    expect(posthog.capture).toHaveBeenCalledWith(
+      'runtime_error',
+      expect.objectContaining({
+        source: 'react',
+        message: 'Exploded',
+        theme: 'spruce',
+        layout: 'split',
+        focusMode: true,
+      }),
+    );
+  });
+
+  it('registers a global error listener', () => {
+    bootAnalytics();
+    const dispose = registerErrorTracking();
+
+    window.dispatchEvent(new ErrorEvent('error', { message: 'Window crash', error: new Error('Window crash') }));
+
+    expect(posthog.capture).toHaveBeenCalledWith(
+      'runtime_error',
+      expect.objectContaining({ source: 'window', message: 'Window crash' }),
+    );
+
+    dispose();
   });
 });

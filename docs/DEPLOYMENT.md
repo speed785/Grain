@@ -26,6 +26,7 @@ Grain can optionally load PostHog for richer product analytics.
 - Add `VITE_POSTHOG_KEY` as a GitHub repository variable used at build time
 - Optionally add `VITE_POSTHOG_HOST`; default: `https://us.i.posthog.com`
 - If `VITE_POSTHOG_KEY` is absent, analytics stays disabled
+- Runtime errors are also forwarded to PostHog from uncaught exceptions, unhandled promise rejections, and React error boundaries
 
 GitHub CLI examples:
 

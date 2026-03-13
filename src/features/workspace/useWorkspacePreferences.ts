@@ -31,9 +31,10 @@ export function useWorkspacePreferences(): WorkspacePreferences {
     document.body.dataset.theme = themeId;
     document.body.dataset.scale = fontScale;
     document.body.dataset.focus = isFocusMode ? 'on' : 'off';
+    document.body.dataset.layout = layoutMode;
     applyThemeAppearance(themeId);
     setStoredValue(themeStorageKey, themeId);
-  }, [isFocusMode, themeId, fontScale]);
+  }, [fontScale, isFocusMode, layoutMode, themeId]);
 
   useEffect(() => {
     setStoredValue(layoutStorageKey, layoutMode);
