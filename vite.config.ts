@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [react()],
   base: process.env.VITE_BASE_PATH ?? '/',
   build: {
+    sourcemap: 'hidden',
     rollupOptions: {
       output: {
         manualChunks: {

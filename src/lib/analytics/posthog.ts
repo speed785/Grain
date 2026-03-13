@@ -53,7 +53,7 @@ function getAnalyticsConfig() {
 }
 
 async function loadPostHogClient() {
-  const module = await import('posthog-js');
+  const [module] = await Promise.all([import('posthog-js'), import('posthog-js/dist/surveys')]);
   return module.default as PostHogClient;
 }
 
@@ -100,6 +100,8 @@ export function bootAnalytics() {
       capture_pageleave: true,
       person_profiles: 'identified_only',
       autocapture: false,
+      disable_session_recording: true,
+      advanced_enable_surveys: true,
     });
 
     analyticsReady = true;

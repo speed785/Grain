@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import CodeMirror, { type ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { markdown } from '@codemirror/lang-markdown';
-import { oneDark } from '@codemirror/theme-one-dark';
 import type { RefObject } from 'react';
 import type { ThemeId } from '../../app/types';
 
@@ -29,10 +28,9 @@ export function EditorPane({ editorRef, content, themeId, onChange }: EditorPane
       <div className="panel-surface editor-surface">
         <CodeMirror
           ref={editorRef}
-          className="editor-root"
+          className={`editor-root editor-root-${themeId}`}
           value={content}
           height="100%"
-          theme={themeId === 'graphite' ? oneDark : undefined}
           extensions={[markdown()]}
           basicSetup={{
             foldGutter: false,

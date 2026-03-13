@@ -388,6 +388,31 @@ textarea {
   background: transparent;
 }
 
+.editor-root-graphite .cm-editor {
+  color: #edf3f6;
+}
+
+.editor-root-graphite .cm-gutters {
+  background: transparent;
+  border-right: 0;
+  color: rgba(205, 221, 228, 0.56);
+}
+
+.editor-root-graphite .cm-content,
+.editor-root-graphite .cm-line {
+  color: #edf3f6;
+}
+
+.editor-root-graphite .cm-cursor,
+.editor-root-graphite .cm-dropCursor {
+  border-left-color: #9fd0ea;
+}
+
+.editor-root-graphite .cm-selectionBackground,
+.editor-root-graphite .cm-content ::selection {
+  background: rgba(91, 146, 177, 0.36);
+}
+
 .editor-root .cm-scroller {
   font-family: var(--font-mono);
   line-height: 1.65;
