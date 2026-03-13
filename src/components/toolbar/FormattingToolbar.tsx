@@ -27,6 +27,7 @@ type FormattingToolbarProps = {
   isFocusMode: boolean;
   onFocusModeChange: (value: boolean) => void;
   onExportMarkdown: () => void;
+  onTriggerDevError?: () => void;
 };
 
 function runCommand(getEditorView: () => EditorView | undefined, command: (view: EditorView) => void) {
@@ -50,6 +51,7 @@ export function FormattingToolbar({
   isFocusMode,
   onFocusModeChange,
   onExportMarkdown,
+  onTriggerDevError,
 }: FormattingToolbarProps) {
   return (
     <div className="toolbar-strip">
@@ -120,6 +122,12 @@ export function FormattingToolbar({
         <button type="button" className="theme-chip" data-active={isFocusMode} onClick={() => onFocusModeChange(!isFocusMode)}>
           Focus
         </button>
+
+        {import.meta.env.DEV && onTriggerDevError ? (
+          <button type="button" className="theme-chip" onClick={onTriggerDevError}>
+            Test Error
+          </button>
+        ) : null}
       </div>
     </div>
   );

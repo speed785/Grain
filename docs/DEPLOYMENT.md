@@ -35,6 +35,16 @@ gh variable set VITE_POSTHOG_KEY --body "phc_your_project_key" --repo speed785/G
 gh variable set VITE_POSTHOG_HOST --body "https://us.i.posthog.com" --repo speed785/Grain
 ```
 
+## Survey Starter Plan
+
+Use PostHog surveys with existing Grain events as triggers.
+
+- `app_loaded` for a light activation survey after repeat visits
+- `markdown_exported` for a post-session satisfaction survey
+- `focus_mode_toggled` for roadmap and workflow feedback
+
+Suggested survey prompts live in `src/config/surveys.config.ts`.
+
 ## Branch Checks
 
 - CI runs on `main`, `master`, `develop`, and pull requests targeting those branches

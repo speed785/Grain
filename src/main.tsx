@@ -6,9 +6,11 @@ import { bootAnalytics, registerErrorTracking, trackEvent } from './lib/analytic
 import { GrainErrorBoundary } from './components/system/GrainErrorBoundary';
 import { grainConfig } from './config/grain.config';
 
-if (bootAnalytics()) {
-  trackEvent('app_loaded', { source: 'main' });
-}
+void bootAnalytics().then((ready) => {
+  if (ready) {
+    trackEvent('app_loaded', { source: 'main' });
+  }
+});
 
 registerErrorTracking();
 document.title = grainConfig.appName;

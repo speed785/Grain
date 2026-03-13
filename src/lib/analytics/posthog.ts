@@ -1,5 +1,3 @@
-import posthog from 'posthog-js';
-
 const defaultPostHogHost = 'https://us.i.posthog.com';
 
 type AnalyticsEventMap = {
@@ -37,7 +35,15 @@ type AnalyticsEventMap = {
   };
 };
 
+type PostHogClient = {
+  init: (key: string, options: Record<string, unknown>) => void;
+  capture: (event: string, properties?: Record<string, unknown>) => void;
+};
+
 let analyticsReady = false;
+let analyticsBootPromise: Promise<boolean> | null = null;
+let posthogClient: PostHogClient | null = null;
+const pendingEvents: Array<{ eventName: keyof AnalyticsEventMap; properties: AnalyticsEventMap[keyof AnalyticsEventMap] }> = [];
 
 function getAnalyticsConfig() {
   return {
@@ -46,39 +52,75 @@ function getAnalyticsConfig() {
   };
 }
 
+async function loadPostHogClient() {
+  const module = await import('posthog-js');
+  return module.default as PostHogClient;
+}
+
+function flushPendingEvents() {
+  if (!posthogClient) {
+    return;
+  }
+
+  while (pendingEvents.length > 0) {
+    const nextEvent = pendingEvents.shift();
+
+    if (!nextEvent) {
+      return;
+    }
+
+    posthogClient.capture(nextEvent.eventName, nextEvent.properties as Record<string, unknown>);
+  }
+}
+
 export function bootAnalytics() {
-  if (typeof window === 'undefined' || analyticsReady) {
-    return false;
+  if (typeof window === 'undefined') {
+    return Promise.resolve(false);
+  }
+
+  if (analyticsReady) {
+    return Promise.resolve(true);
+  }
+
+  if (analyticsBootPromise) {
+    return analyticsBootPromise;
   }
 
   const { key, host } = getAnalyticsConfig();
 
   if (!key) {
-    return false;
+    return Promise.resolve(false);
   }
 
-  posthog.init(key, {
-    api_host: host,
-    capture_pageview: true,
-    capture_pageleave: true,
-    person_profiles: 'identified_only',
-    autocapture: false,
+  analyticsBootPromise = loadPostHogClient().then((client) => {
+    posthogClient = client;
+    posthogClient.init(key, {
+      api_host: host,
+      capture_pageview: true,
+      capture_pageleave: true,
+      person_profiles: 'identified_only',
+      autocapture: false,
+    });
+
+    analyticsReady = true;
+    flushPendingEvents();
+
+    return true;
   });
 
-  analyticsReady = true;
-
-  return true;
+  return analyticsBootPromise;
 }
 
 export function trackEvent<EventName extends keyof AnalyticsEventMap>(
   eventName: EventName,
   properties: AnalyticsEventMap[EventName],
 ) {
-  if (!analyticsReady) {
+  if (!analyticsReady || !posthogClient) {
+    pendingEvents.push({ eventName, properties });
     return;
   }
 
-  posthog.capture(eventName, properties);
+  posthogClient.capture(eventName, properties as Record<string, unknown>);
 }
 
 function getWorkspaceContext() {
@@ -139,4 +181,7 @@ export function registerErrorTracking() {
 
 export function resetAnalyticsForTests() {
   analyticsReady = false;
+  analyticsBootPromise = null;
+  posthogClient = null;
+  pendingEvents.length = 0;
 }

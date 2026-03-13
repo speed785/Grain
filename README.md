@@ -100,6 +100,7 @@ Tracked starter events:
 ## Customization
 
 - Edit `src/config/grain.config.ts` to change the app name, header copy, theme palette, and font stacks in one place
+- Edit `src/config/surveys.config.ts` to keep survey ideas and event triggers organized before creating them in PostHog
 - Focus mode is built in and can be toggled from the toolbar or with `Ctrl/Cmd+Shift+F`
 
 ## Brand Migration

@@ -38,6 +38,12 @@ function PanelFallback({ label }: { label: string }) {
   );
 }
 
+function triggerDevRuntimeError() {
+  window.setTimeout(() => {
+    throw new Error('Grain dev runtime error');
+  }, 0);
+}
+
 export function AppShell() {
   useLegacyStorageMigration();
 
@@ -79,6 +85,7 @@ export function AppShell() {
           onFontScaleChange={setFontScale}
           isFocusMode={isFocusMode}
           onFocusModeChange={setIsFocusMode}
+          onTriggerDevError={import.meta.env.DEV ? triggerDevRuntimeError : undefined}
           onExportMarkdown={() => {
             trackEvent('markdown_exported', {
               wordCount,
