@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import type { ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { WorkspaceHeader } from '../components/layout/WorkspaceHeader';
@@ -41,18 +41,32 @@ export function AppShell() {
   useLegacyStorageMigration();
 
   const editorRef = useRef<ReactCodeMirrorRef>(null);
-  const { layoutMode, setLayoutMode, themeId, setThemeId, fontScale, setFontScale } = useWorkspacePreferences();
+  const { layoutMode, setLayoutMode, themeId, setThemeId, fontScale, setFontScale, isFocusMode, setIsFocusMode } = useWorkspacePreferences();
   const { content, setContent, wordCount, readMinutes, title, saveLabel } = useDocumentState(sampleDocument);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if ((event.metaKey || event.ctrlKey) && event.shiftKey && event.key.toLowerCase() === 'f') {
+        event.preventDefault();
+        setIsFocusMode((value) => !value);
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [setIsFocusMode]);
 
   return (
     <div className="app-shell">
       <motion.div
         className="shell-card"
+        data-focus={isFocusMode}
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: 'easeOut' }}
       >
-        <WorkspaceHeader title={title} wordCount={wordCount} readMinutes={readMinutes} saveLabel={saveLabel} />
+        {!isFocusMode && <WorkspaceHeader title={title} wordCount={wordCount} readMinutes={readMinutes} saveLabel={saveLabel} />}
 
         <FormattingToolbar
           getEditorView={() => editorRef.current?.view}
@@ -62,6 +76,8 @@ export function AppShell() {
           onThemeChange={setThemeId}
           fontScale={fontScale}
           onFontScaleChange={setFontScale}
+          isFocusMode={isFocusMode}
+          onFocusModeChange={setIsFocusMode}
           onExportMarkdown={() => downloadMarkdownFile(content, title)}
         />
 

@@ -23,8 +23,14 @@ Grain builds to `dist/` and can be deployed on any static host that supports Vit
 Grain can optionally load GoatCounter for simple hosted analytics.
 
 - Create a free GoatCounter site
-- Add `VITE_GOATCOUNTER_DOMAIN=your-project.goatcounter.com` as a GitHub repository variable or secret used at build time
+- Add `VITE_GOATCOUNTER_DOMAIN=your-project.goatcounter.com` as a GitHub repository variable used at build time
 - If the variable is absent, no analytics script is loaded
+
+GitHub CLI example:
+
+```bash
+gh variable set VITE_GOATCOUNTER_DOMAIN --body "your-project.goatcounter.com" --repo speed785/Grain
+```
 
 ## Branch Checks
 

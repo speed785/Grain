@@ -24,6 +24,8 @@ type FormattingToolbarProps = {
   onThemeChange: (value: ThemeId) => void;
   fontScale: FontScale;
   onFontScaleChange: (value: FontScale) => void;
+  isFocusMode: boolean;
+  onFocusModeChange: (value: boolean) => void;
   onExportMarkdown: () => void;
 };
 
@@ -45,6 +47,8 @@ export function FormattingToolbar({
   onThemeChange,
   fontScale,
   onFontScaleChange,
+  isFocusMode,
+  onFocusModeChange,
   onExportMarkdown,
 }: FormattingToolbarProps) {
   return (
@@ -112,6 +116,10 @@ export function FormattingToolbar({
             </button>
           ))}
         </div>
+
+        <button type="button" className="theme-chip" data-active={isFocusMode} onClick={() => onFocusModeChange(!isFocusMode)}>
+          Focus
+        </button>
       </div>
     </div>
   );

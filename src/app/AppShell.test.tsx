@@ -74,4 +74,16 @@ describe('AppShell workflows', () => {
       expect(window.localStorage.getItem('grain.document.content')).toBe('# New title\n\nFresh draft');
     }, { timeout: 1000 });
   });
+
+  it('toggles focus mode and persists the preference', async () => {
+    render(<App />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Focus' }));
+
+    await waitFor(() => {
+      expect(screen.queryByText('Write with flow. Shape the workspace.')).not.toBeInTheDocument();
+    });
+
+    expect(window.localStorage.getItem('grain.workspace.focus-mode')).toBe('on');
+  });
 });

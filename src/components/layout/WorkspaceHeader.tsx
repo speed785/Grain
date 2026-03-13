@@ -1,3 +1,5 @@
+import { grainConfig } from '../../config/grain.config';
+
 type WorkspaceHeaderProps = {
   title: string;
   wordCount: number;
@@ -9,12 +11,9 @@ export function WorkspaceHeader({ title, wordCount, readMinutes, saveLabel }: Wo
   return (
     <header className="topbar">
       <div>
-        <p className="eyebrow">Foundation build</p>
-        <h1>Write with flow. Shape the workspace.</h1>
-        <p className="subtitle">
-          A focused markdown workspace with live preview, saved preferences, and a visual system that already
-          feels like a product instead of a scaffold.
-        </p>
+        <p className="eyebrow">{grainConfig.header.eyebrow}</p>
+        <h1>{grainConfig.header.title}</h1>
+        <p className="subtitle">{grainConfig.header.subtitle}</p>
       </div>
 
       <div className="meta-row">

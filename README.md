@@ -83,7 +83,13 @@ Serves the production build locally for verification.
 
 - Optional GoatCounter support is built in for free, privacy-friendly traffic metrics
 - Set `VITE_GOATCOUNTER_DOMAIN=your-project.goatcounter.com` to enable it
+- For GitHub Pages, add it as a repository variable named `VITE_GOATCOUNTER_DOMAIN`
 - Leave that variable unset to ship with no analytics script at all
+
+## Customization
+
+- Edit `src/config/grain.config.ts` to change the app name, header copy, theme palette, and font stacks in one place
+- Focus mode is built in and can be toggled from the toolbar or with `Ctrl/Cmd+Shift+F`
 
 ## Brand Migration
 

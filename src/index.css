@@ -131,6 +131,12 @@ textarea {
   overflow: hidden;
 }
 
+.shell-card[data-focus='on'] {
+  min-height: calc(100vh - 48px);
+  grid-template-rows: auto 1fr;
+  padding-top: 16px;
+}
+
 .shell-card::before {
   content: '';
   position: absolute;
@@ -218,6 +224,11 @@ textarea {
   backdrop-filter: blur(18px);
 }
 
+.shell-card[data-focus='on'] .toolbar-strip {
+  position: sticky;
+  top: 0;
+}
+
 .toolbar-group,
 .theme-group {
   display: flex;
@@ -294,6 +305,10 @@ textarea {
   display: grid;
   gap: 18px;
   min-height: 0;
+}
+
+.shell-card[data-focus='on'] .workspace {
+  gap: 12px;
 }
 
 .workspace[data-layout='split'] {
@@ -515,6 +530,12 @@ textarea {
   margin-bottom: 8px;
   color: var(--text-secondary);
   font-weight: 600;
+}
+
+body[data-focus='on'] {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.32), transparent 28%),
+    var(--page-bg);
 }
 
 @keyframes panel-shimmer {
