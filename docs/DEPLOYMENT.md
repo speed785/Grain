@@ -18,6 +18,14 @@ Grain builds to `dist/` and can be deployed on any static host that supports Vit
 - Build-time base path is set automatically from the repository name via `VITE_BASE_PATH`
 - In repository settings, enable GitHub Pages with GitHub Actions as the source
 
+## Free Metrics
+
+Grain can optionally load GoatCounter for simple hosted analytics.
+
+- Create a free GoatCounter site
+- Add `VITE_GOATCOUNTER_DOMAIN=your-project.goatcounter.com` as a GitHub repository variable or secret used at build time
+- If the variable is absent, no analytics script is loaded
+
 ## Branch Checks
 
 - CI runs on `main`, `master`, `develop`, and pull requests targeting those branches

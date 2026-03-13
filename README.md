@@ -79,6 +79,12 @@ Serves the production build locally for verification.
 - `.github/workflows/deploy-pages.yml` deploys the production build to GitHub Pages from `main`
 - `VITE_BASE_PATH` is supported for static deployments that need a repository subpath
 
+## Analytics
+
+- Optional GoatCounter support is built in for free, privacy-friendly traffic metrics
+- Set `VITE_GOATCOUNTER_DOMAIN=your-project.goatcounter.com` to enable it
+- Leave that variable unset to ship with no analytics script at all
+
 ## Brand Migration
 
 - Grain now uses `grain.*` local storage keys
